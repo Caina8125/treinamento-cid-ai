@@ -37,14 +37,18 @@ print(f"🖥️ Device: {device}")
 # ===============================
 # 1️⃣ DOWNLOAD DO DATASET (SE NECESSÁRIO)
 # ===============================
-if not os.listdir(DATA_DIR):
-    print("⬇️ Dataset não encontrado. Baixando do S3...")
-    subprocess.run(
-        ["aws", "s3", "sync", f"s3://{DATA_BUCKET}", DATA_DIR, "--region", AWS_REGION],
-        check=True
-    )
-else:
-    print("✅ Dataset já presente localmente.")
+print("⬇️ Sincronizando dataset do S3 (download incremental)...")
+subprocess.run(
+    [
+        "aws", "s3", "sync",
+        f"s3://{DATA_BUCKET}",
+        DATA_DIR,
+        "--region", AWS_REGION,
+        "--only-show-errors"
+    ],
+    check=True
+)
+
 
 # ===============================
 # TRANSFORMS (IGUAL AO COLAB)
@@ -135,31 +139,26 @@ for epoch in range(EPOCHS):
         f"Train {train_acc:.2f}% | Val {val_acc:.2f}%"
     )
 
-# ===============================
 # SALVAR MODELOS
-# ===============================
 torch.save(model.state_dict(), MODEL_PTH)
 print("💾 Modelo salvo localmente")
 
-# ===============================
 # UPLOAD PARA S3
-# ===============================
 print("☁️ Enviando modelo para o S3...")
 subprocess.run(
     ["aws", "s3", "cp", MODEL_PTH, f"s3://{MODEL_BUCKET}/"],
     check=True
 )
 
-# ===============================
+
 # DESLIGAR A INSTÂNCIA
-# ===============================
 print("🛑 Desligando instância EC2...")
 instance_id = requests.get(
     "http://169.254.169.254/latest/meta-data/instance-id", timeout=2
 ).text
 
 subprocess.run(
-    ["aws", "ec2", "stop-instances", "--instance-ids", instance_id, "--region", AWS_REGION],
+    ["aws", "ec2", "stop-instances", "--instance-ids", "i-04756ed93f0692f40", "--region", AWS_REGION],
     check=True
 )
 
