@@ -34,9 +34,7 @@ os.makedirs(LOG_DIR, exist_ok=True)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"🖥️ Device: {device}")
 
-# ===============================
 # 1️⃣ DOWNLOAD DO DATASET (SE NECESSÁRIO)
-# ===============================
 print("⬇️ Sincronizando dataset do S3 (download incremental)...")
 subprocess.run(
     [
@@ -50,9 +48,7 @@ subprocess.run(
 )
 
 
-# ===============================
 # TRANSFORMS (IGUAL AO COLAB)
-# ===============================
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.RandomHorizontalFlip(0.5),
@@ -62,9 +58,7 @@ transform = transforms.Compose([
                          [0.229, 0.224, 0.225])
 ])
 
-# ===============================
 # DATASET / SPLIT
-# ===============================
 dataset = datasets.ImageFolder(DATA_DIR, transform=transform)
 
 train_size = int(0.8 * len(dataset))
@@ -83,9 +77,7 @@ val_loader = DataLoader(
 
 print(f"📊 Total imagens: {len(dataset)} | Classes: {dataset.classes}")
 
-# ===============================
 # MODELO
-# ===============================
 model = models.resnet50(weights=models.ResNet50_Weights.IMAGENET1K_V1)
 model.fc = nn.Linear(model.fc.in_features, len(dataset.classes))
 model.to(device)
@@ -93,9 +85,7 @@ model.to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=LR)
 
-# ===============================
 # VALIDAÇÃO
-# ===============================
 def validate():
     model.eval()
     correct = total = 0
@@ -108,9 +98,7 @@ def validate():
             total += y.size(0)
     return 100 * correct / total
 
-# ===============================
 # TREINAMENTO
-# ===============================
 print("🚀 Iniciando treinamento")
 for epoch in range(EPOCHS):
     model.train()
