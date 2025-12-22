@@ -28,18 +28,14 @@ CLASSES = {
 
 TRAIN_RATIO = 0.8  # 80% treino / 20% validação
 
-# ==========================
 # CRIA DIRETÓRIOS
-# ==========================
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 for split in ["train", "val"]:
     (LOCAL_DATASET / "images" / split).mkdir(parents=True, exist_ok=True)
     (LOCAL_DATASET / "labels" / split).mkdir(parents=True, exist_ok=True)
 
-# ==========================
 # DOWNLOAD DO DATASET (UMA VEZ)
-# ==========================
 print("⬇️ Sincronizando dataset do S3 (download incremental)...")
 subprocess.run(
     [
@@ -54,9 +50,7 @@ subprocess.run(
 
 print("✅ Download concluído")
 
-# ==========================
 # PROCESSAMENTO LOCAL
-# ==========================
 for classe_nome, class_id in CLASSES.items():
     pasta_classe = DATA_DIR / classe_nome
 
