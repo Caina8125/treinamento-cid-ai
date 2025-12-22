@@ -8,7 +8,7 @@ import random
 # ==========================
 # CONFIGURAÇÕES
 # ==========================
-DATA_BUCKET = "cid-yolo-dataset"
+DATA_BUCKET = "amhp-teste-ml/cid-yolo-dataset"
 AWS_REGION = "us-east-1"
 
 DATA_DIR = Path("data_s3")           # onde o aws s3 sync vai baixar
