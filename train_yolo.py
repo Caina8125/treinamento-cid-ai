@@ -8,7 +8,7 @@ import subprocess
 # ==========================
 DATA_YAML = "dataset_yolo/data.yaml"
 MODEL_BASE = "yolov8s.pt"   # recomendo 's' para documentos
-EPOCHS = 30
+EPOCHS = 11
 IMG_SIZE = 640
 BATCH_SIZE = 16
 WORKERS = 8

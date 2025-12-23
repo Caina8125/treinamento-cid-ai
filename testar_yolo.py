@@ -4,7 +4,7 @@ import torch
 
 # CONFIGURAÇÕES
 MODEL_PATH = "best.pt"  # caminho local do modelo
-SOURCE = R"C:\treinamento-cid-ai\teste_censo\solicit_GEAP2.png"  # pode ser: imagem.jpg OU pasta
+SOURCE = R"C:\treinamento-cid-ai\teste_censo\solict_hono_geap2.png"  # pode ser: imagem.jpg OU pasta
 CONF_THRESHOLD = 0.25
 
 # # CHECK GPU
