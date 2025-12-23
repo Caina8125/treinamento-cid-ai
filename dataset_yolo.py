@@ -80,7 +80,12 @@ for classe_nome, class_id in CLASSES.items():
         img_dest = LOCAL_DATASET / "images" / split / new_name
         label_dest = LOCAL_DATASET / "labels" / split / f"{Path(new_name).stem}.txt"
 
-        shutil.copy(img_path, img_dest)
+        # shutil.copy(img_path, img_dest)
+
+        try:
+            os.link(img_path, img_dest)   # hard link (zero espaço)
+        except OSError:
+            shutil.copy(img_path, img_dest)  # fallback se não suportar
 
         # Label YOLO – página inteira
         with open(label_dest, "w") as f:
